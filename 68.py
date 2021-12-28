@@ -42,6 +42,7 @@ def convert_1d(list):
             lista.append(j)
     return lista
 
+# Chyba źle bo w odpowiedziach jest 17
 def Z3(napisy):
     lista = [1 for i in napisy]*2
     napisy = convert_1d(napisy)
@@ -72,4 +73,4 @@ def Z3(napisy):
 
 #print(Z1(lista))
 #print(Z2(lista))
-print(Z3(lista))
+#print(Z3(lista))
