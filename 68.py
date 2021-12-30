@@ -2,7 +2,7 @@ file = open("dane/68/dane_napisy.txt")
 
 lista = [i.strip().split(" ") for i in file.readlines()]
 
-#print(lista)
+print(lista)
 
 def czy_jednolity(napisy):
     for napis in napisy:
@@ -42,7 +42,7 @@ def convert_1d(list):
             lista.append(j)
     return lista
 
-# Chyba źle bo w odpowiedziach jest 17
+
 def Z3(napisy):
     lista = [1 for i in napisy]*2
     napisy = convert_1d(napisy)
@@ -55,8 +55,8 @@ def Z3(napisy):
             lista[i] = 0
             anagramy = []
             anagramy.append(napisy[i])
-            k = 0
-            for j in range(len(napisy)):
+            k = 1
+            for j in range(i+1,len(napisy)):
                 if is_anagram([napisy[i], napisy[j]]):
                     anagramy.append(napisy[j])
                     lista[j] = 0
@@ -73,4 +73,4 @@ def Z3(napisy):
 
 #print(Z1(lista))
 #print(Z2(lista))
-#print(Z3(lista))
+print(Z3(lista))
