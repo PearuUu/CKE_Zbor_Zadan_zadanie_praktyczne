@@ -1,54 +1,56 @@
-with open("dane/69/dane_geny.txt", "r") as file:
-    baza = [line.strip() for line in file]
+liczba_liter = 0
+alfabet = {}
+samogloski = "AEIOUY"
+najdluzsze_podslowo = ""
+podslowa = []
+
+with open("dane/73/tekst.txt", "r") as file:
+    for line in file:
+        slowa = line.split()
 
 
-def znajdz_genotyp(genotyp):
-    genyG = []
-    gen = ""
-    litera = genotyp[0]
-    for x, znak in enumerate(genotyp[1::]):
-        if litera + znak == "AA" and len(gen) == 0:
-            gen += litera + znak
-        elif len(gen) != 0:
-            gen += znak
-        if litera + znak == "BB" and len(gen) != 0:
-            genyG.append(gen)
-            gen = ""
-        litera = znak
-    return genyG
+def uzupelnij_czestosc(slowo):
+    for znak in slowo:
+        if znak not in alfabet:
+            alfabet[znak] = 1
+        else:
+            alfabet[znak] += 1
+
+def znajdz_podslowo(slowo):
+    global najdluzsze_podslowo
+    global podslowa
+    podslowo = ""
+    for znak in slowo:
+        if znak not in samogloski:
+            podslowo += znak
+            if len(podslowo) >= len(najdluzsze_podslowo):
+                if len(podslowo) > len(najdluzsze_podslowo):
+                    podslowa = []
+                najdluzsze_podslowo = podslowo
+                if slowo not in podslowa:
+                    podslowa.append(slowo)
+        else:
+            dlugosc = 0
+            podslowo = ""
+
+podpunkt_1 = []
+for word in slowa:
+    znak = word[0]
+    for char in word[1::]:
+        if znak == char:
+            podpunkt_1.append(word)
+            break
+        znak = char
+    uzupelnij_czestosc(word)
+    liczba_liter += len(word)
+    znajdz_podslowo(word)
 
 
-gatunki = {}
-z_mutacja = []
-najwiecej_genow = 0
-najlduzszy_gen = ""
-genyOdporne = []
-genySuperOdporne = []
-for genotyp in baza:
-    if len(genotyp) not in gatunki:
-        gatunki[len(genotyp)] = 1
-    else:
-        gatunki[len(genotyp)] += 1
-    geny = znajdz_genotyp(genotyp)
-    genLewy = znajdz_genotyp(genotyp[::-1])
-    if len(geny) > 0:
-        if len(geny) > najwiecej_genow:
-            najwiecej_genow = len(geny)
-        for gen in geny:
-            mutacjaDodana = False
-            if "BCDDC" in gen and mutacjaDodana == False:
-                z_mutacja.append(gen)
-                mutacjaDodana = True
-            if len(gen) > len(najlduzszy_gen):
-                najlduzszy_gen = gen
-    if geny == genLewy:
-        genyOdporne.append(geny)
-    if genotyp == genotyp[::-1]:
-        genySuperOdporne.append(genotyp)
 
 print("-" * 40)
-print("69.1) Jest {} wszyskich gatunkow, {} reprezentuje jeden gatunek".format(len(gatunki),
-                                                                               sorted(gatunki.values())[-1]))
-print("69.2) Jest {} osobnikow z mutacja".format(len(z_mutacja)))
-print("69.3) Najwiecej jest {} genow, a najdluzszy ma {} znakow".format(najwiecej_genow, len(najlduzszy_gen)))
-print("69.4) Genotypow odpornych jest {}, a silnie odpornych {}".format(len(genyOdporne), len(genySuperOdporne)))
+print("73.1) Takich slow jest {}".format(len(podpunkt_1)))
+print("73.2) Slownik czestosci: ")
+for litera in sorted(alfabet):
+    print("{}: {} ({}%)".format(litera, alfabet[litera], round((alfabet[litera]/liczba_liter) * 100, 2)))
+
+print("73.3) Najdluzsze podslowo ma {} znakow, pierwsze slowo to {}, a lacznie jest ich {}".format(len(najdluzsze_podslowo), podslowa[0], len(podslowa)))
